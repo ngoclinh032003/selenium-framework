@@ -1,0 +1,36 @@
+package utils;
+
+import java.io.FileInputStream;
+import java.util.Properties;
+
+public class ConfigReader {
+
+    private static Properties properties = new Properties();
+
+    static {
+        try {
+            FileInputStream fis = new FileInputStream("src/test/resources/config.properties");
+            properties.load(fis);
+        } catch (Exception e) {
+            System.out.println("Config file not found, using ENV only");
+        }
+    }
+
+    public static String getUsername() {
+        return getEnvOrDefault("SAUCEDEMO_USERNAME", "username");
+    }
+
+    public static String getPassword() {
+        return getEnvOrDefault("SAUCEDEMO_PASSWORD", "password");
+    }
+
+    private static String getEnvOrDefault(String envKey, String propKey) {
+        String envValue = System.getenv(envKey);
+
+        if (envValue != null && !envValue.isEmpty()) {
+            return envValue;
+        }
+
+        return properties.getProperty(propKey);
+    }
+}
