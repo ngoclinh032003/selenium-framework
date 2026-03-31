@@ -1,0 +1,29 @@
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.chrome.ChromeOptions;
+
+switch (browser.toLowerCase()) {
+
+    case "firefox":
+        FirefoxOptions ffOptions = new FirefoxOptions();
+
+        if (System.getenv("CI") != null) {
+            ffOptions.addArguments("-headless");
+        }
+
+        wd = new FirefoxDriver(ffOptions);
+        break;
+
+    case "chrome":
+    default:
+        ChromeOptions chromeOptions = new ChromeOptions();
+
+        if (System.getenv("CI") != null) {
+            chromeOptions.addArguments("--headless=new");
+            chromeOptions.addArguments("--no-sandbox");
+            chromeOptions.addArguments("--disable-dev-shm-usage");
+        }
+
+        wd = new ChromeDriver(chromeOptions);
+        break;
+}
